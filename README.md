@@ -1,19 +1,13 @@
-# Flask + Docker Starter Project
+# Flask + Docker + Nginx Load Balancer
 
 A simple Flask web application containerized with Docker.  
-This project demonstrates how to run a Flask app:
-1. Locally on your machine
-2. Inside a Docker container
-
-Later, we will extend this with **Nginx** and **Docker Compose**.
-
----
 
 ## 🚀 Project Scope
-- Build a basic Flask app with routes and templates
-- Run the app locally with `venv`
-- Containerize the app with a Dockerfile
-- Expose the app on `http://localhost:5000`
+
+1. Locally on your machine
+2. Inside a Docker container
+3. Run application using Docker Compose
+4. Use nginx reverse proxy to loadbalance between three app instances
 
 ---
 
@@ -25,8 +19,11 @@ flask-docker-app/
 │ ├── routes.py
 │ └── templates/
 │ └── index.html
+│── nginx/
+│ └── nginx.conf
 │── requirements.txt
 │── Dockerfile
+│── docker-compose.yml
 │── README.md
 ```
 ---
@@ -58,3 +55,34 @@ python app/main.py
 ```
 
 App will be available at 👉 http://127.0.0.1:5000
+
+## 🐳 Run with Docker (Single Instance) 
+
+```bash
+docker build -t flask-app .
+docker run -p 5000:5000 flask-app
+```
+Visit 👉 http://127.0.0.1:5000
+
+🐙 Run with Docker Compose (Single Flask Service)
+```bash
+docker-compose up --build
+```
+Visit 👉 http://127.0.0.1:5000
+
+## 🌍 Run with Docker Compose + Nginx Load Balancer
+```bash
+docker-compose up --build
+```
+
+Now visit 👉 http://localhost
+
+Refresh the page multiple times.
+You’ll see alternating responses:
+
+Hello from Flask-App1 🚀
+Hello from Flask-App2 🚀
+Hello from Flask-App3 🚀
+
+
+This demonstrates round-robin load balancing by Nginx.
